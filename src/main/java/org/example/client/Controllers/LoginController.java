@@ -92,31 +92,44 @@ public class LoginController {
 
     private void openClassroomScene(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/ViewsFXML/classroom.fxml")
-            );
+            String fxmlPath;
+            String title; // <-- tạo biến title
+
+            if (currentUser.getRole().equalsIgnoreCase("teacher")) {
+                fxmlPath = "/ViewsFXML/teacherDashboard.fxml";
+                title = "Teacher Panel - Classroom App"; // tiêu đề cho giáo viên
+            } else {
+                fxmlPath = "/ViewsFXML/classroom.fxml";
+                title = "Student Panel - Classroom App"; // tiêu đề cho học sinh
+            }
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
 
-            // Nếu muốn truyền connection + user sang ClassroomController
-//            ClassroomController controller = loader.getController();
-//            controller.setConnection(connection);
-//            controller.setCurrentUser(currentUser);
+            // Nếu muốn truyền connection + user sang Controller
+//        ClassroomController controller = loader.getController();
+//        controller.setConnection(connection);
+//        controller.setCurrentUser(currentUser);
 
-            // Tạo Scene với kích thước
             Scene scene = new Scene(root, 920, 700);
 
             // Load CSS
             try {
                 String cssPath = getClass().getResource("/css/classroom.css").toExternalForm();
                 scene.getStylesheets().add(cssPath);
-                System.out.println("✅ CSS loaded: " + cssPath);
             } catch (Exception cssError) {
                 System.err.println("⚠️ Không load được CSS: " + cssError.getMessage());
             }
 
-            // Lấy Stage hiện tại và set scene
+            // Lấy Stage hiện tại
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(scene); // dùng scene đã load CSS
+            stage.setScene(scene);
+
+            // -----------------------------
+            // ✅ Set tiêu đề cửa sổ
+            stage.setTitle(title);
+            // -----------------------------
+
             stage.show();
 
         } catch (Exception e) {
@@ -124,5 +137,6 @@ public class LoginController {
             lblStatus.setText("Không load được màn hình classroom.");
         }
     }
+
 
 }

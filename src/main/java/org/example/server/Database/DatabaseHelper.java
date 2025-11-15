@@ -16,15 +16,13 @@ public class DatabaseHelper {
     private Connection conn;
 
     public DatabaseHelper() throws SQLException {
-        createDatabaseIfNotExists();   // 1. Tạo database nếu chưa có
-        connect();                     // 2. Kết nối vào database
-        createUsersTable();            // 3. Tạo bảng users nếu chưa có
-        insertDemoUsers();             // 4. Thêm user mẫu nếu chưa tồn tại
+        createDatabaseIfNotExists();
+        connect();
+        createUsersTable();
+        insertDemoUsers();
     }
 
-    // ==========================================================
-    // 1) Tạo DATABASE nếu chưa có
-    // ==========================================================
+    // --------------------------- 1) Tạo DATABASE ---------------------------
     private void createDatabaseIfNotExists() throws SQLException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -35,31 +33,27 @@ public class DatabaseHelper {
                 System.out.println("Database OK (đã tồn tại hoặc tự tạo mới).");
             }
         } catch (ClassNotFoundException e) {
-            System.out.println("Không tìm thấy MySQL JDBC Driver.");
-            throw new SQLException(e);
+            throw new SQLException("Không tìm thấy MySQL JDBC Driver.", e);
         }
     }
 
-    // ==========================================================
-    // 2) Kết nối vào database classroom_db
-    // ==========================================================
+    // --------------------------- 2) Kết nối DB ----------------------------
     private void connect() throws SQLException {
         conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
         System.out.println("Đã kết nối tới MySQL: " + DB_URL);
     }
 
-    // ==========================================================
-    // 3) Tạo bảng users nếu chưa có
-    // ==========================================================
+    // --------------------------- 3) Tạo bảng users ------------------------
     private void createUsersTable() throws SQLException {
         String sql = """
                 CREATE TABLE IF NOT EXISTS users (
                     id         INT AUTO_INCREMENT PRIMARY KEY,
-                    student_id VARCHAR(50),
+                    student_id VARCHAR(50) NULL,
                     username   VARCHAR(50) UNIQUE,
                     password   VARCHAR(100),
                     full_name  VARCHAR(100),
-                    class_name VARCHAR(50)
+                    class_name VARCHAR(50),
+                    role       VARCHAR(20)
                 );
                 """;
 
@@ -67,18 +61,17 @@ public class DatabaseHelper {
             st.execute(sql);
         }
 
-        System.out.println("Bảng users OK (đã tồn tại hoặc tự tạo mới).");
+        System.out.println("Bảng users OK.");
     }
 
-    // ==========================================================
-    // 4) Thêm 2 user mẫu nếu chưa có
-    // ==========================================================
+    // --------------------------- 4) Insert user mẫu -----------------------
     private void insertDemoUsers() throws SQLException {
         String sql = """
-                INSERT IGNORE INTO users (student_id, username, password, full_name, class_name)
+                INSERT IGNORE INTO users (student_id, username, password, full_name, class_name, role)
                 VALUES 
-                    ('20123456', 'sv01', '123456', 'Nguyen Van A', 'DHKTPM16A'),
-                    ('20123457', 'sv02', '123456', 'Tran Thi B',  'DHKTPM16A');
+                    ('20123456', 'sv01', '123456', 'Nguyen Van A', 'DHKTPM16A', 'user'),
+                    ('20123457', 'sv02', '123456', 'Tran Thi B',  'DHKTPM16A', 'user'),
+                    (NULL,      'gv01', '123456', 'Thay Nguyen',  NULL,        'teacher');
                 """;
 
         try (Statement st = conn.createStatement()) {
@@ -88,12 +81,10 @@ public class DatabaseHelper {
         System.out.println("User mẫu đã sẵn sàng.");
     }
 
-    // ==========================================================
-    // 5) Hàm kiểm tra login
-    // ==========================================================
+    // --------------------------- 5) Check login ---------------------------
     public UserInfo checkLogin(String username, String password) {
         String sql = """
-                SELECT id, student_id, username, full_name, class_name
+                SELECT id, student_id, username, full_name, class_name, role
                 FROM users
                 WHERE username = ? AND password = ?;
                 """;
@@ -111,7 +102,8 @@ public class DatabaseHelper {
                         rs.getString("student_id"),
                         rs.getString("username"),
                         rs.getString("full_name"),
-                        rs.getString("class_name")
+                        rs.getString("class_name"),
+                        rs.getString("role")
                 );
             }
 
