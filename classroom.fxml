@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.client.Controllers.ClassroomController">
+
+    <!-- Thanh trên cùng -->
+    <top>
+        <HBox spacing="10" style="-fx-background-color: #2c3e50;">
+            <padding>
+                <Insets top="10" right="15" bottom="10" left="15"/>
+            </padding>
+
+            <Label text="Classroom Dashboard"
+                   style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+            <Pane HBox.hgrow="ALWAYS"/>
+
+            <!-- Chỗ này sau này bạn có thể bind tên user -->
+            <Label fx:id="lblCurrentUser"
+                   text="Student: ?"
+                   style="-fx-text-fill: #ecf0f1;"/>
+        </HBox>
+    </top>
+
+    <!-- Nội dung chính: các tab chức năng -->
+    <center>
+        <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE">
+
+            <Tab text="Chat">
+                <BorderPane>
+                    <center>
+                        <Label text="Khu vực Chat (sau này load chat.fxml vào đây)"/>
+                    </center>
+                </BorderPane>
+            </Tab>
+
+            <Tab text="Whiteboard">
+                <BorderPane>
+                    <center>
+                        <Label text="Khu vực Whiteboard"/>
+                    </center>
+                </BorderPane>
+            </Tab>
+
+            <Tab text="Screen Share">
+                <BorderPane>
+                    <center>
+                        <Label text="Khu vực Screen Share"/>
+                    </center>
+                </BorderPane>
+            </Tab>
+
+            <Tab text="Tasks">
+                <BorderPane>
+                    <center>
+                        <Label text="Danh sách bài tập / nhiệm vụ"/>
+                    </center>
+                </BorderPane>
+            </Tab>
+
+        </TabPane>
+    </center>
+
+    <!-- Thanh trạng thái dưới cùng -->
+    <bottom>
+        <HBox spacing="10" style="-fx-background-color: #ecf0f1;">
+            <padding>
+                <Insets top="5" right="10" bottom="5" left="10"/>
+            </padding>
+
+            <Label text="Status:"/>
+            <Label fx:id="lblStatus" text="Connected to server"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>

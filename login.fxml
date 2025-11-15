@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.client.Controllers.LoginController">
+
+    <center>
+        <VBox alignment="CENTER" spacing="10">
+            <padding>
+                <Insets top="30" right="30" bottom="30" left="30"/>
+            </padding>
+
+            <Label text="Classroom Management System"
+                   style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+            <TextField fx:id="txtServerIp"
+                       promptText="Server IP (vd: 192.168.1.10)"
+                       maxWidth="250"/>
+
+            <TextField fx:id="txtUsername"
+                       promptText="Username"
+                       maxWidth="250"/>
+
+            <PasswordField fx:id="txtPassword"
+                           promptText="Password"
+                           maxWidth="250"/>
+
+            <Button text="Login"
+                    onAction="#onLoginClicked"
+                    maxWidth="120"/>
+
+            <Label fx:id="lblStatus"
+                   textFill="red"
+                   wrapText="true"
+                   maxWidth="300"/>
+        </VBox>
+    </center>
+
+</BorderPane>
