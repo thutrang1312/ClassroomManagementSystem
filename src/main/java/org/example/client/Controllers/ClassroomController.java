@@ -1,3 +1,4 @@
+// Nơi: org.example.client.Controllers/ClassroomController.java
 package org.example.client.Controllers;
 
 import javafx.fxml.FXML;
@@ -6,6 +7,13 @@ import javafx.scene.layout.VBox;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
+
+// SỬA: Thêm các import để load FXML
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import java.io.IOException;
 
 public class ClassroomController {
 
@@ -25,6 +33,19 @@ public class ClassroomController {
     @FXML private VBox sendFileCard;
     @FXML private VBox tasksCard;
     @FXML private VBox profileCard;
+
+    // (Hàm initialize() và các hàm setup... giữ nguyên)
+    // ...
+    // (Hàm loadCSS() giữ nguyên)
+    // ...
+    // (Hàm setupCardHandlers() giữ nguyên)
+    // ...
+    // (Hàm setupNavigationHandlers() giữ nguyên)
+    // ...
+    // (Hàm setupStartButton() giữ nguyên)
+    // ...
+    // (Hàm switchTab() giữ nguyên)
+    // ...
 
     @FXML
     public void initialize() {
@@ -104,25 +125,92 @@ public class ClassroomController {
         });
     }
 
+
+    /**
+     * SỬA: Hàm này đã được cập nhật
+     * Nó sẽ gọi hàm "openChatWindow()" khi nhấn vào Chat
+     * và hiển thị thông báo cho TẤT CẢ các nút khác.
+     */
     private void handleFeature(String featureName) {
         System.out.println(featureName + " clicked");
-        showInfo(featureName, "Opening " + featureName + " feature...");
-
-        // Add your specific feature logic here
+        
         switch(featureName) {
-            case "Share Screen":
-                // Implement screen sharing logic
-                break;
-            case "Video Call":
-                // Implement video call logic
-                break;
             case "Chat":
-                // Implement chat logic
+                // SỬA: Gọi hàm mở cửa sổ Chat
+                openChatWindow();
                 break;
-            // Add other cases as needed
+                
+            case "Share Screen":
+                // (Chưa làm)
+                showInfo(featureName, "Opening " + featureName + " feature...");
+                break;
+                
+            case "Video Call":
+                 // (Chưa làm)
+                showInfo(featureName, "Opening " + featureName + " feature...");
+                break;
+                
+            // ... (Thêm các case khác ở đây)
+            
+            default:
+                // SỬA: Các nút còn lại sẽ đi vào đây
+                showInfo(featureName, "Opening " + featureName + " feature...");
+                break;
         }
     }
 
+    /**
+     * SỬA: Thêm hàm mới để mở cửa sổ Chat
+     * (Đây là code tôi gửi bạn ở tin nhắn trước)
+     */
+    private void openChatWindow() {
+        try {
+            // 1. Tạo một FXML Loader
+            // (Đảm bảo đường dẫn /ViewsFXML/chat.fxml là chính xác)
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ViewsFXML/chat.fxml"));
+            
+            // 2. Load file FXML
+            Parent chatRoot = loader.load();
+
+            // 3. Tạo Scene mới
+            Scene chatScene = new Scene(chatRoot, 400, 500); // Kích thước
+
+            // 4. SỬA: THÊM CSS CỦA JFOENIX (BẮT BUỘC)
+            // Đây là bước sửa lỗi "textNode is null"
+            try {
+                // Đường dẫn CSS của JFoenix (bắt buộc)
+            	String jfoenixCSS = getClass().getResource("/com/jfoenix/controls/css/jfoenix-components.css").toExternalForm();
+                
+                // Đường dẫn CSS của bạn (ví dụ: main.css, nếu có)
+                String mainCSS = getClass().getResource("/css/main.css").toExternalForm();
+                
+                // Thêm cả 2 file CSS vào Scene
+                chatScene.getStylesheets().addAll(jfoenixCSS, mainCSS);
+                
+            } catch (Exception e) {
+                System.err.println("LỖI: Không thể tìm thấy file CSS của JFoenix.");
+                // Ứng dụng vẫn sẽ chạy nhưng JFoenix sẽ bị lỗi
+            }
+            // --- KẾT THÚC SỬA ---
+
+            // 5. Tạo một Cửa sổ (Stage) mới
+            Stage chatStage = new Stage();
+            chatStage.setTitle("Cửa sổ Chat"); // Đặt tiêu đề
+            
+            // 6. Đặt Scene vào Cửa sổ
+            chatStage.setScene(chatScene);
+
+            // 7. Hiển thị cửa sổ Chat mới
+            chatStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Hiển thị lỗi nếu không tìm thấy file chat.fxml
+            showError("Lỗi FXML", "Không thể tải file chat.fxml." +
+                      "\nLỗi: " + e.getMessage());
+        }
+    }
+    // (Hàm switchTab() giữ nguyên)
     private void switchTab(String tabName) {
         System.out.println("Switched to " + tabName + " tab");
 
@@ -145,8 +233,20 @@ public class ClassroomController {
         }
     }
 
+    // (Hàm showInfo() giữ nguyên)
     private void showInfo(String title, String message) {
         Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+    
+    /**
+     * SỬA: Thêm hàm mới để báo lỗi (nếu cần)
+     */
+    private void showError(String title, String message) {
+        Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);

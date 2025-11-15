@@ -32,11 +32,7 @@
         <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE">
 
             <Tab text="Chat">
-                <BorderPane>
-                    <center>
-                        <Label text="Khu vực Chat (sau này load chat.fxml vào đây)"/>
-                    </center>
-                </BorderPane>
+                <fx:include source="chat.fxml" />
             </Tab>
 
             <Tab text="Whiteboard">
