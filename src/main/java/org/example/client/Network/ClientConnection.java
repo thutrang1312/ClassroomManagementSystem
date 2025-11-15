@@ -1,61 +1,43 @@
 package org.example.client.Network;
 
-
 import org.example.shared.TransferObject;
+
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class ClientConnection {
- private static ClientConnection instance;
- private Socket socket;
- private ObjectOutputStream out;
- private ObjectInputStream in;
 
- // Dùng Singleton
- public static synchronized ClientConnection getInstance() {
-     if (instance == null) {
-         instance = new ClientConnection();
-     }
-     return instance;
- }
+    private Socket socket;
+    private ObjectOutputStream out;
+    private ObjectInputStream in;
 
- // 1. Kết nối tới Server
- public void connect(String ip, int port) throws Exception {
-     socket = new Socket(ip, port);
-     out = new ObjectOutputStream(socket.getOutputStream());
-     in = new ObjectInputStream(socket.getInputStream());
+    public ClientConnection(String host, int port) throws IOException {
+        // Kết nối tới server (máy giáo viên)
+        socket = new Socket(host, port);
 
-     // 2. Khởi chạy luồng lắng nghe (RẤT QUAN TRỌNG)
-     startListening();
- }
+        // Tạo stream gửi/nhận object
+        out = new ObjectOutputStream(socket.getOutputStream());
+        out.flush(); // quan trọng
+        in = new ObjectInputStream(socket.getInputStream());
+    }
 
- // 3. Luồng lắng nghe (tai của client)
- private void startListening() {
-     new Thread(() -> {
-         try {
-             while (true) {
-                 TransferObject msg = (TransferObject) in.readObject();
-                 // Xử lý tin nhắn từ Server (sẽ làm ở giai đoạn 4)
-                 handleServerMessage(msg);
-             }
-         } catch (Exception e) {
-             System.out.println("Mất kết nối Server.");
-         }
-     }).start();
- }
+    // Gửi object (TransferObject) lên server
+    public synchronized void send(TransferObject obj) throws IOException {
+        out.writeObject(obj);
+        out.flush();
+    }
 
- // 4. Hàm để Gửi tin nhắn (miệng của client)
- public void sendMessage(TransferObject msg) {
-     try {
-         out.writeObject(msg);
-     } catch (Exception e) {
-         e.printStackTrace();
-     }
- }
+    // Nhận object (TransferObject) từ server
+    public synchronized TransferObject receive() throws IOException, ClassNotFoundException {
+        return (TransferObject) in.readObject();
+    }
 
- // 5. Nơi xử lý tin nhắn từ Server (sẽ làm sau)
- private void handleServerMessage(TransferObject msg) {
-     // Dùng switch-case ở đây
- }
+    // Đóng kết nối
+    public void close() {
+        try {
+            if (socket != null && !socket.isClosed()) socket.close();
+        } catch (IOException ignored) {}
+    }
 }

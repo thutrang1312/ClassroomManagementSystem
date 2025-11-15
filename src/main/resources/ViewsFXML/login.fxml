@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.client.Controllers.LoginController"
+            prefHeight="550.0" prefWidth="450.0"
+            style="-fx-background-color: linear-gradient(to bottom, #667eea 0%, #764ba2 100%);">
+
+    <VBox alignment="CENTER" spacing="25.0" AnchorPane.topAnchor="40" AnchorPane.bottomAnchor="40"
+          AnchorPane.leftAnchor="50" AnchorPane.rightAnchor="50"
+          style="-fx-background-color: white; -fx-background-radius: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 20, 0, 0, 5); -fx-padding: 40;">
+
+        <!-- Tiêu đề -->
+        <VBox alignment="CENTER" spacing="5">
+            <Label text="Đăng nhập" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #667eea;"/>
+            <Label text="Classroom Management System" style="-fx-font-size: 16px; -fx-text-fill: #888;"/>
+        </VBox>
+
+        <!-- Form -->
+        <VBox spacing="15" prefWidth="300">
+            <VBox spacing="5">
+                <Label text="Server IP" style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #555;"/>
+                <TextField fx:id="txtServerIp" promptText="Server IP (vd: 192.168.1.10)" maxWidth="250"/>
+            </VBox>
+
+            <VBox spacing="5">
+                <Label text="Username" style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #555;"/>
+                <TextField fx:id="txtUsername" promptText="Nhập tên của bạn" maxWidth="250"/>
+            </VBox>
+
+            <VBox spacing="5">
+                <Label text="Mật khẩu" style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #555;"/>
+                <PasswordField fx:id="txtPassword" promptText="Nhập mật khẩu" maxWidth="250"/>
+            </VBox>
+        </VBox>
+
+        <!-- Button -->
+        <Button text="Đăng nhập" fx:id="loginButton" prefWidth="300" prefHeight="45"
+                onAction="#onLoginClicked"
+                style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-background-radius: 8;"/>
+
+        <!-- Status -->
+        <Label fx:id="lblStatus" textFill="red" wrapText="true" maxWidth="300"/>
+    </VBox>
+</AnchorPane>

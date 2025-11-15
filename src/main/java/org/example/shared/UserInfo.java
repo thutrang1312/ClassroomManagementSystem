@@ -3,26 +3,43 @@ package org.example.shared;
 
 import java.io.Serializable;
 
-public class UserInfo implements Serializable {
- private String username;
- private String password;
- public UserInfo(String username, String password) {
-	super();
-	this.username = username;
-	this.password = password;
- }
- public String getUsername() {
-	return username;
- }
- public void setUsername(String username) {
-	this.username = username;
- }
- public String getPassword() {
-	return password;
- }
- public void setPassword(String password) {
-	this.password = password;
- }
 
- 
+import java.io.Serializable;
+
+public class UserInfo implements Serializable {
+
+    private int id;
+    private String studentId;
+    private String username;
+    private String fullName;
+    private String className;
+
+    public UserInfo(int id, String studentId, String username, String fullName, String className) {
+        this.id = id;
+        this.studentId = studentId;
+        this.username = username;
+        this.fullName = fullName;
+        this.className = className;
+    }
+
+    // GETTERS
+    public int getId() {
+        return id;
+    }
+
+    public String getStudentId() {
+        return studentId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public String getClassName() {
+        return className;
+    }
 }
